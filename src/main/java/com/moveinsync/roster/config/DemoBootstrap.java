@@ -16,6 +16,8 @@ public class DemoBootstrap {
             jdbc.update("insert into tenants(id,name) values (?,'Demo tenant') on conflict do nothing",tenant);
             jdbc.update("insert into offices(tenant_id,code,name) values (?,'BLR','Demo office') on conflict do nothing",tenant);
             jdbc.update("insert into employees(id,tenant_id,external_employee_id,name,email,office_code,created_at,updated_at,hr_hash) values (?,?,'DEMO-EMPLOYEE','Demo','demo@example.invalid','BLR',now(),now(),roster_hr_hash('Demo','demo@example.invalid',null,null,'BLR',true)) on conflict do nothing",employee,tenant);
+            jdbc.update("insert into booking_cabs(tenant_id,id,capacity) values (?,? ,4) on conflict do nothing",
+                    tenant,UUID.fromString("55555555-5555-4555-8555-555555555555"));
             for (String role:List.of("EMPLOYEE","ADMIN","OPERATOR","HR_INTEGRATION")) {
                 String username=role.equals("HR_INTEGRATION")?"hr":role.toLowerCase(Locale.ROOT);
                 jdbc.update("insert into app_users(tenant_id,id,username,password_hash,role,employee_id) values (?,?,?,?,?,?) on conflict(tenant_id,username) do nothing",
