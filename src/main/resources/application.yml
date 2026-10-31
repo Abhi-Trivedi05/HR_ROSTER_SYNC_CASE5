@@ -1,6 +1,8 @@
 spring:
   application:
     name: hr-roster-sync
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/roster}
     username: ${DB_USERNAME:roster}
@@ -62,6 +64,11 @@ management:
   endpoint:
     health:
       show-details: never
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,db
 roster:
   cache:
     enabled: ${CACHE_ENABLED:true}
@@ -87,6 +94,7 @@ logging:
     org.hibernate.orm.jdbc.bind: OFF
     org.hibernate.engine.jdbc.spi.SqlExceptionHelper: OFF
 server:
+  shutdown: graceful
   error:
     include-message: never
     include-stacktrace: never

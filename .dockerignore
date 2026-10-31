@@ -4,3 +4,8 @@ target
 .env
 var
 benchmark-output
+docs
+tools
+.github
+*.log
+**/__pycache__
