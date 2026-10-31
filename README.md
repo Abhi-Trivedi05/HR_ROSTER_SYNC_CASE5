@@ -12,11 +12,31 @@ Implemented capabilities: independently validated event batches; durable event r
 docker compose up --build
 ```
 
-Requires Docker with Linux containers and Compose. This starts the application on [localhost:8080](http://localhost:8080), PostgreSQL, authenticated Redis, durable RabbitMQ, and named volumes for database, broker and immutable snapshot files. Health: `/actuator/health`. RabbitMQ management: [localhost:15672](http://localhost:15672), local user `roster`, password `local-rabbit-only` unless overridden.
+Requires only Docker with Linux containers and Compose v2; no host Java, Maven, PostgreSQL, Redis, RabbitMQ, API key, `.env` file or external identity provider is needed for the default demo. The multi-stage Dockerfile builds the Java 21 JAR, then runs it as a non-root user in a smaller JRE image. Dependency downloads are cached between builds.
+
+This starts the API on [localhost:8080](http://localhost:8080), PostgreSQL, authenticated Redis and durable RabbitMQ. PostgreSQL/Redis/broker connections stay on the private Compose network. Named volumes preserve the database, broker and immutable snapshot files across restarts. Health: [localhost:8080/actuator/health](http://localhost:8080/actuator/health). RabbitMQ management: [localhost:15672](http://localhost:15672), local user `roster`, password `local-rabbit-only` unless overridden.
+
+For a single background command that waits until the application is ready:
+
+```shell
+docker compose up --build --wait --wait-timeout 240
+```
+
+Dependency healthchecks gate initial startup; the application readiness check waits for migrations, demo bootstrap and database readiness. Its readiness depends on PostgreSQL rather than RabbitMQ/Redis so a later broker/cache outage does not stop durable HR ingestion. The full health endpoint reports all dependency health. The app has a 1 GiB container limit, JVM container-aware heap sizing and graceful shutdown. Redis has a bounded 128 MiB LRU cache. First startup downloads build dependencies/images and takes longer than a cached restart.
+
+Useful commands:
+
+```shell
+docker compose ps
+docker compose logs -f app
+docker compose down
+```
+
+`down` stops the stack and retains named-volume data. Avoid deleting volumes when you want to preserve employee/snapshot/booking data.
 
 Compose intentionally activates the **local demonstration profile** so the project runs without an external identity provider. It creates a fixture tenant, office and four BCrypt-hashed users. Default password: `LocalDemoOnly!2026`. Set `DEMO_PASSWORD`, `DB_PASSWORD`, `RABBIT_PASSWORD`, and `REDIS_PASSWORD` before initial startup to override local defaults. Existing user hashes are not silently rotated on restart. These are local development defaults; they are not production credentials.
 
-Tenant: `11111111-1111-4111-8111-111111111111`. Login usernames use this tenant UUID followed by `:hr`, `:admin`, `:operator`, or `:employee`. Demo employee internal ID: `22222222-2222-4222-8222-222222222222`. Tenant-qualified username is only an untrusted credential lookup selector; authorization identity is constructed from the verified database user after BCrypt verification.
+Tenant: `11111111-1111-4111-8111-111111111111`. Login usernames use this tenant UUID followed by `:hr`, `:admin`, `:operator`, or `:employee`. Demo employee internal ID: `22222222-2222-4222-8222-222222222222`; a four-seat demo cab is also provisioned as `55555555-5555-4555-8555-555555555555`. Tenant-qualified username is only an untrusted credential lookup selector; authorization identity is constructed from the verified database user after BCrypt verification.
 
 ```shell
 curl -X POST http://localhost:8080/api/v1/auth/token \
@@ -37,6 +57,8 @@ mvn -Pbenchmarks -Dit.test=BenchmarkIT verify
 ```
 
 `test` runs unit/MVC/security/cache/CSV tests. `verify` additionally runs real PostgreSQL Testcontainers, RabbitMQ, Redis, network failure and forked-JVM crash tests. Docker absence causes failure, never an automatic skip. Benchmarks are explicitly opt-in and run with a 512 MiB test heap; the snapshot benchmark asserts its 60-second target after writing its actual result. Results go to `benchmark-output/*.json`; `progress.json` is only incomplete-run progress, not a benchmark result. Normal CI excludes expensive benchmark-tagged tests and runs all functional tests with Docker.
+
+CI also builds the actual Dockerfile, starts the complete Compose stack with `--wait`, and runs `python3 tools/compose_smoke.py` against the real HTTP API. That local-demo smoke covers four-role login, HR/transport ownership, actual Redis population, persisted CSV upload/approval/application, and RabbitMQ-driven booking cancellation/seat release. It restores the demo employee afterward and retains safe fixture/audit records; use it only on a local demonstration stack. Container status/logs are saved as CI artifacts. The smoke uses Python's standard library; Python is needed only for this optional verification helper, not for starting the app.
 
 For explicitly selected PostgreSQL-only tests, an existing real PostgreSQL may be supplied:
 

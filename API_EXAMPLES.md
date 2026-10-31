@@ -101,11 +101,12 @@ curl -X PATCH http://localhost:8080/api/v1/tenant/config \
 
 ## Booking sample
 
-Provision a cab through a controlled database session, then an employee token may reserve its own seats:
+The demo profile already provisions this four-seat cab. For a separately provisioned tenant, create a cab through a controlled database session, then an employee token may reserve its own seats:
 
 ```sql
 INSERT INTO booking_cabs(tenant_id,id,capacity)
-VALUES ('11111111-1111-4111-8111-111111111111','55555555-5555-4555-8555-555555555555',4);
+VALUES ('11111111-1111-4111-8111-111111111111','55555555-5555-4555-8555-555555555555',4)
+ON CONFLICT DO NOTHING;
 ```
 
 ```json
