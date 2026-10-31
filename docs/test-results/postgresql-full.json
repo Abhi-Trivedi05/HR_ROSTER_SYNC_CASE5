@@ -1,0 +1,102 @@
+{
+  "source": "Java 21 Maven failsafe-reports",
+  "mode": "explicit real PostgreSQL 16.10",
+  "suites": [
+    {
+      "name": "com.moveinsync.roster.booking.BookingCancellationIT",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "consumerCrashBeforeCommitAndRedeliveryReleaseSeatsOnce",
+        "noBookingsAndAlreadyCancelledBookingsAreSafe",
+        "failureDuringSeatReleaseRollsBackAndRedeliverySucceeds",
+        "multipleFutureBookingsCancelledAndSeatsReleasedOnce",
+        "delayedExitCannotCancelNewRehireBookings",
+        "employeeExitRemainsCommittedWhenConsumerFails"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.config.SecurityIT",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "tenantACannotReadOrUpdateTenantB",
+        "realEndpointRejectsCrossTenantAndBodyMassAssignment",
+        "employeeSeesOnlyTheirOwnProfile",
+        "adminCannotApproveButOperatorCanCreateRun"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.ingestion.EventIngestionIT",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "concurrentVersionsEightAndNineFinishAtNine",
+        "transportAndHrWorkConcurrentlyWithoutLosingEitherOwner",
+        "createUpdateAndDeactivate",
+        "twentyConcurrentReplaysProduceOneLogicalUpdate",
+        "sameVersionDetectsCanonicalPayloadAndEventIdConflicts",
+        "failureAfterEmployeeWriteRollsBackEmployeeReceiptAndOutbox",
+        "versionsFiveSevenSixAndExactReplayChangeNothing",
+        "mixedBatchValidatesEachRecordAndRejectsMassAssignment"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.outbox.OutboxIT",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "crashAfterAcceptanceLeavesLeaseAndRepublishesSameEventId",
+        "expiredWorkerCannotMarkANewerClaimAsPublished",
+        "pendingChangeSurvivesPublisherRestart",
+        "unavailableBrokerAndTimeoutBackoffThenDeadLetter"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.snapshot.ProcessStagingCrashIT",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "realProcessCrashAfterCommitLeavesPendingOutbox",
+        "realProcessCrashDuringStagingRecoversWithoutPrematureEmployeeChanges"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.snapshot.ReconciliationIT",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "newerHrEventInvalidatesApprovalAndCannotBeOverwritten",
+        "approvalCannotAuthorizeAnotherRunOrChecksum",
+        "failedApplyIsAtomicAndRetainsApprovalForRetry",
+        "thresholdChangeRequiresNewReview",
+        "stagingCrashLeavesDurableArtifactAndRecoveryRestagesSameRun",
+        "conflictingRowVersionIsCountedAsInvalid",
+        "normalSnapshotDiffAndApprovalPreserveTransport",
+        "snapshotUsesPerEmployeeVersionsWithoutInventingFutureVersions",
+        "invalidDuplicateIdsAreStillDetectedAndSafeRowErrorsAreReported",
+        "fortyPercentMissingIsBlockedUntilExplicitOverride",
+        "emptyDuplicateInvalidAndTruncatedFilesCannotApply",
+        "sqlAndJavaCanonicalHashesMatch"
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

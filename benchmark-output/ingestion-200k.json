@@ -1,0 +1,17 @@
+{
+  "name" : "ingestion-200k",
+  "records" : 200000,
+  "elapsedSeconds" : 676.406337,
+  "throughputPerSecond" : 295.68025764962636,
+  "latencyUnit" : "single-event ingestion service calls; HTTP excluded",
+  "p50Ms" : 3.1756,
+  "p95Ms" : 4.6422,
+  "p99Ms" : 5.8801,
+  "peakSampledHeapBytes" : 90774536,
+  "jdbcExecuteCalls" : 2200000,
+  "maxHeapBytes" : 536870912,
+  "java" : "21.0.13.0.2",
+  "os" : "Windows 11",
+  "processors" : 12,
+  "timestamp" : "2026-10-30T19:10:47.760403500Z"
+}

@@ -1,0 +1,19 @@
+{
+  "name" : "snapshot-200k",
+  "records" : 200000,
+  "elapsedSeconds" : 58.6697156,
+  "throughputPerSecond" : 3408.9137462940075,
+  "latencyUnit" : "5000-row parse/staging batches; first sample includes upload",
+  "p50Ms" : 419.1305,
+  "p95Ms" : 552.5225,
+  "p99Ms" : 1665.0883,
+  "peakSampledHeapBytes" : 202738944,
+  "jdbcExecuteCalls" : 582,
+  "maxHeapBytes" : 536870912,
+  "java" : "21.0.13.0.2",
+  "os" : "Windows 11",
+  "processors" : 12,
+  "timestamp" : "2026-10-30T19:27:48.509637300Z",
+  "stagingSeconds" : 19.6461345,
+  "applySeconds" : 38.7413484
+}

@@ -1,0 +1,119 @@
+{
+  "source": "Java 21 Maven surefire-reports",
+  "mode": "unit/MVC",
+  "suites": [
+    {
+      "name": "com.moveinsync.roster.cache.ProfileCacheTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "redisFailureFallsBackToDatabase",
+        "evictionRemovesPointerAndExactVersion",
+        "cacheHitUsesTenantAndRevisionAndTracksMetrics",
+        "newRevisionCannotReadOldCachedProfile"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.config.LocalJwtConfigTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "bcryptHashesAndVerifiesPasswords",
+        "invalidSignatureRejected",
+        "validSignatureAccepted",
+        "expiredJwtRejected",
+        "malformedJwtRejected"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.config.RequiredJwtClaimsValidatorTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "acceptsRequiredClaims",
+        "requiresExpiry",
+        "requiresTenantUuid",
+        "rejectsMalformedRolesAndMissingSubject",
+        "defaultIssuerValidatorRejectsExpiredAndWrongIssuer",
+        "requiresAudience"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.employee.EmployeeControllerTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "massAssignmentRejectedWithoutEcho",
+        "employeeCannotUseAdminEndpoint",
+        "unauthenticatedIs401",
+        "transportDtoCannotChangeSourceVersion",
+        "tenantComesFromVerifiedToken",
+        "invalidBearerIs401",
+        "adminCannotApproveSnapshotAtSecurityLayer"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.employee.ManagerValidatorTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "cycleRejectedAndLookupsScoped",
+        "selfManagementRejectedWithoutLookup",
+        "managerFromAnotherTenantIsNotFound"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.ingestion.BatchMetricsTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "countsReceivedAppliedRejectedAndDuplicatesWithoutMetricIdentityLabels"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.ingestion.EventValidatorTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "phoneEmailIdAndVersionCodes",
+        "hashIsUnambiguousDeterministicAndExcludesTransport",
+        "validDeactivationHasNoData",
+        "validCreateAndUpdate"
+      ]
+    },
+    {
+      "name": "com.moveinsync.roster.snapshot.CsvStreamingReaderTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "quotesUnicodeAndInvalidRecordsAreIndependent",
+        "batchesRemainBoundedFor200KRows",
+        "exactThresholdAndZeroDenominatorAreSafe",
+        "oversizedLogicalRecordIsRejected",
+        "malformedHeaderAndTruncatedQuotesAreRejected"
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 35,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

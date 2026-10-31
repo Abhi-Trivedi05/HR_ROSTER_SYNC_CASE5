@@ -1,0 +1,17 @@
+{
+  "name" : "concurrent-updates-20-threads",
+  "records" : 20000,
+  "elapsedSeconds" : 57.1304579,
+  "throughputPerSecond" : 350.0759618452139,
+  "latencyUnit" : "per-event core transaction latency; stale arrivals included",
+  "p50Ms" : 53.7076,
+  "p95Ms" : 72.0238,
+  "p99Ms" : 105.4335,
+  "peakSampledHeapBytes" : 90834880,
+  "jdbcExecuteCalls" : 219400,
+  "maxHeapBytes" : 536870912,
+  "java" : "21.0.13.0.2",
+  "os" : "Windows 11",
+  "processors" : 12,
+  "timestamp" : "2026-10-30T19:11:45.604782700Z"
+}
