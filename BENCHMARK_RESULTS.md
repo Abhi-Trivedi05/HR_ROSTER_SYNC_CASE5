@@ -49,4 +49,4 @@ The snapshot and other methods were executed in separate invocations to investig
 
 The coarse tenant lock is visible in the measured single-tenant ingestion/update throughput and queueing latency. This implementation favors ordering/ownership/approval correctness; reducing that contention requires a carefully tested finer locking design. The snapshot's largest cost is database application, not JVM file loading.
 
-RabbitMQ, Redis, broker/network failure cases and Docker Compose startup could not be executed on this host because Docker/WSL are unavailable. Native PostgreSQL results do not prove those integrations. The full container verification is not green; see [verification record](docs/verification.md).
+These measurements used native PostgreSQL because Docker/WSL are unavailable on the local host. RabbitMQ/Redis/network integration and the complete Docker Compose startup subsequently passed in Docker-enabled GitHub CI; see the [verification record](docs/verification.md). That functional/container success does not remeasure these performance numbers inside containers.

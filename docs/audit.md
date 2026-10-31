@@ -48,4 +48,4 @@ Security/cache/operations: signed JWT checks, BCrypt, role/self/tenant guards, c
 - The one-command Compose deployment is an explicit local demo. Production uses external identity, managed secrets/TLS and non-superuser application roles; the compose owner account and bootstrap passwords are not production defaults.
 - Snapshot artifacts contain PII even though reports/outbox/logs do not. They require deployment-level access control, encryption, retention and backups. Multi-instance deployments must share the artifact store; local ephemeral disks are insufficient.
 - Cache coherence deliberately requires an authoritative DB metadata read. During DB outage, stale cached profiles are not served.
-- A full passing container suite and actual broker crash/network behavior still require Docker. An explicit local real-PostgreSQL run proves database behavior but does not prove Redis/RabbitMQ integration or Compose startup.
+- A local real-PostgreSQL run alone does not prove Redis/RabbitMQ integration or Compose startup. These subsequently passed in Docker-enabled GitHub CI; the actual run and full-stack smoke coverage are linked in [verification.md](verification.md).

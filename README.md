@@ -4,7 +4,7 @@ Java 21 / Spring Boot 3.5.16 modular monolith with PostgreSQL, JPA/JDBC, Flyway,
 
 Implemented capabilities: independently validated event batches; durable event replay/version records; transactional employee/outbox writes; streaming CSV staging and bucketed diff; checksum-bound approval and explicit safety-brake override; atomic snapshot application; publisher leases/confirms/backoff/dead records; consumer inbox and transactional booking/seat cancellation; tenant-scoped access and coherent versioned caches.
 
-**Verification status is recorded in [BENCHMARK_RESULTS.md](BENCHMARK_RESULTS.md) and [docs/verification.md](docs/verification.md). Do not treat implemented infrastructure tests as passing until their actual execution is recorded.**
+**Verified:** both `mvn verify` and the complete Docker Compose build/start/smoke scenario passed in [GitHub Actions](https://github.com/Abhi-Trivedi05/HR_ROSTER_SYNC_CASE5/actions/runs/41188266387). Measurements and execution evidence are in [BENCHMARK_RESULTS.md](BENCHMARK_RESULTS.md) and [docs/verification.md](docs/verification.md).
 
 ## Start
 

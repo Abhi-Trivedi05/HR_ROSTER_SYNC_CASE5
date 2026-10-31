@@ -1,5 +1,18 @@
 # Executed verification - 2026-10-31
 
+## Published Docker stack: verified in CI
+
+[GitHub Actions run 41188266387](https://github.com/Abhi-Trivedi05/HR_ROSTER_SYNC_CASE5/actions/runs/41188266387), application commit `f3f1fbfc016b84895bf6c8aafce4f4ad8444bd43`, completed successfully on 2026-10-31:
+
+- `verify`: `mvn --batch-mode --no-transfer-progress verify` passed on Java 21 with Docker-based integration tests.
+- `compose-smoke`: Compose configuration validation, actual Dockerfile build, `docker compose up --build --wait --wait-timeout 240`, live full-stack smoke, log/status capture and stack cleanup all passed on an Ubuntu Docker runner.
+- The smoke authenticated all four demo roles; applied HR and transport updates; verified an actual Redis profile key; streamed, approved and applied a snapshot through the non-root container's persistent volume; reserved a cab booking; consumed a deactivation through the real outbox/RabbitMQ/inbox path; verified cancellation, seat release and drained outbox; then restored the demo employee.
+- The Compose job requires no host Java/Maven or externally configured identity provider. It uses the same default four-service configuration documented for the single-command startup.
+
+The local Windows machine still has no Docker. The historical local-only results below remain recorded as originally observed; their infrastructure limitation has now been resolved by this successful CI execution. Native benchmark measurements were not rerun inside containers.
+
+## Historical local verification
+
 Host: Windows 11, Asia/Calcutta. Java 21.0.13.0.2 and Maven 3.9.9 were downloaded into ignored `.tools/`. Docker is not installed; WSL is also unavailable. An isolated PostgreSQL 16.10 binary fixture was initialized under `.tools/pgdata-native`, bound to 127.0.0.1:55432, and used explicitly for the PostgreSQL-only tests and benchmarks. This is not described as a Testcontainers run.
 
 ## Actual results
@@ -17,7 +30,7 @@ Host: Windows 11, Asia/Calcutta. Java 21.0.13.0.2 and Maven 3.9.9 were downloade
 | Docker Compose CLI/startup | Could not execute: docker command not found |
 | Compose/application YAML structural parse | Passed; app, PostgreSQL, Redis and RabbitMQ services present (not a Docker schema/runtime check) |
 
-**The full default container verification is not green.** The 71 passing functional tests and three completed benchmark cases do not prove live RabbitMQ/Redis/network/Compose behavior. Default Testcontainers execution fails on this host; there is no automatic fallback or Docker-based success claim.
+**At this earlier local-only stage, container verification was blocked.** Those 71 passing functional tests and three completed benchmark cases alone did not prove live RabbitMQ/Redis/network/Compose behavior. The subsequent successful Docker CI execution is recorded above; there is no automatic local fallback.
 
 Safe archived suite names/case names/totals: [unit summary](test-results/unit-full.json), [PostgreSQL summary](test-results/postgresql-full.json). Full local Surefire/Failsafe reports are in `.tools/build-native/`; targeted smoke reruns can overwrite individual XML files, so the full-run summaries were captured beforehand. Infrastructure setup reports are in `.tools/build-container-check/failsafe-reports/`. Raw measured benchmark JSON is in [benchmarks](benchmarks).
 
@@ -35,7 +48,7 @@ Safe archived suite names/case names/totals: [unit summary](test-results/unit-fu
 - Durable outbox state, backoff/dead handling, fenced leases, simulated crash after broker acceptance and stable duplicate IDs (broker adapter faked only in these PostgreSQL state-machine tests).
 - Real child JVM halted after committed employee/outbox transaction, leaving a pending outbox row. Real child JVM halted after first committed staging batch; lease expiry/restart recovery restaged the durable file without applying employees.
 
-Separate container tests exist for confirmed real RabbitMQ publication, Rabbit duplicate delivery, Redis coherence/invalidation, Toxiproxy database/broker failures and process-crash-to-real-broker recovery. Their setup failed here before assertions; they remain unverified.
+Separate container tests cover confirmed real RabbitMQ publication, Rabbit duplicate delivery, Redis coherence/invalidation, Toxiproxy database/broker failures and process-crash-to-real-broker recovery. Their initial local setup failed before assertions; the subsequent default Maven verification passed in Docker-enabled CI.
 
 ## Commands
 
