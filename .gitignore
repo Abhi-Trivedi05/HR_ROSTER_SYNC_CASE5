@@ -1,0 +1,8 @@
+target/
+.tools/
+.env
+*.log
+.idea/
+*.iml
+var/
+benchmark-output/
