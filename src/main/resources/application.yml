@@ -1,0 +1,92 @@
+spring:
+  application:
+    name: hr-roster-sync
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/roster}
+    username: ${DB_USERNAME:roster}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 5000
+      data-source-properties:
+        reWriteBatchedInserts: true
+        connectTimeout: 5
+        socketTimeout: 90
+        cancelSignalTimeout: 2
+        tcpKeepAlive: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  mvc:
+    log-request-details: false
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    username: ${RABBIT_USERNAME:roster}
+    password: ${RABBIT_PASSWORD:local-rabbit-only}
+    connection-timeout: 3000
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+    listener:
+      simple:
+        default-requeue-rejected: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      password: ${REDIS_PASSWORD:local-redis-only}
+      connect-timeout: 300ms
+      timeout: 300ms
+security:
+  local:
+    enabled: ${LOCAL_AUTH_ENABLED:false}
+  jwt:
+    issuer: ${JWT_ISSUER:http://localhost:8080}
+    jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:8080/api/v1/auth/jwks}
+    audience: ${JWT_AUDIENCE:roster-api}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      show-details: never
+roster:
+  cache:
+    enabled: ${CACHE_ENABLED:true}
+    ttl: ${CACHE_TTL:PT60S}
+  snapshot:
+    missing-threshold: ${MISSING_EMPLOYEE_THRESHOLD:0.30}
+    storage-directory: ${SNAPSHOT_STORAGE:./var/snapshots}
+    max-bytes: 134217728
+    batch-size: ${SNAPSHOT_BATCH_SIZE:5000}
+    recovery-enabled: ${SNAPSHOT_RECOVERY_ENABLED:true}
+  outbox:
+    enabled: ${OUTBOX_ENABLED:true}
+    max-attempts: 10
+    confirm-timeout-ms: 3000
+  booking:
+    consumer-enabled: ${BOOKING_CONSUMER_ENABLED:true}
+logging:
+  structured:
+    format:
+      console: ecs
+  level:
+    org.hibernate.SQL: OFF
+    org.hibernate.orm.jdbc.bind: OFF
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: OFF
+server:
+  error:
+    include-message: never
+    include-stacktrace: never
